@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AcademiaTech</title>
+
+    <!-- Ícones -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* =========================
+   HOME — BASE
+========================= */
+
+.main-content {
+    padding: 40px 60px;
+    min-height: 100vh;
+    background: var(--cor-fundo);
+    color: var(--cor-clara);
+}
+
+/* =========================
+   HERO
+========================= */
+
+.home-hero {
+    max-width: 900px;
+    margin-bottom: 80px;
+}
+
+.home-hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    color: var(--cor-clara);
+}
+
+.home-hero p {
+    font-size: 1.1rem;
+    color: var(--cor-texto-escuro);
+    max-width: 700px;
+    margin-bottom: 30px;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 16px;
+}
+
+.primary-btn,
+.secondary-btn {
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+.primary-btn {
+    background: var(--cor-acento);
+    color: #fff;
+}
+
+.primary-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+}
+
+.secondary-btn {
+    border: 1px solid var(--cor-borda);
+    color: var(--cor-clara);
+    background: transparent;
+}
+
+.secondary-btn:hover {
+    background: var(--cor-destaque);
+}
+
+/* =========================
+   FEATURES
+========================= */
+
+.home-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    margin-bottom: 100px;
+}
+
+.feature-card {
+    background: var(--cor-destaque);
+    border: 1px solid var(--cor-borda);
+    border-radius: 14px;
+    padding: 32px;
+    transition: all 0.25s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--cor-acento);
+}
+
+.feature-card i {
+    font-size: 2rem;
+    color: var(--cor-acento);
+    margin-bottom: 16px;
+}
+
+.feature-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: var(--cor-clara);
+}
+
+.feature-card p {
+    font-size: 0.95rem;
+    color: var(--cor-texto-escuro);
+    line-height: 1.5;
+}
+
+/* =========================
+   CTA FINAL
+========================= */
+
+.home-cta {
+    background: var(--cor-destaque);
+    border: 1px solid var(--cor-borda);
+    border-radius: 20px;
+    padding: 60px;
+    text-align: center;
+}
+
+.home-cta h2 {
+    font-size: 2rem;
+    margin-bottom: 12px;
+    color: var(--cor-clara);
+}
+
+.home-cta p {
+    font-size: 1rem;
+    margin-bottom: 30px;
+    color: var(--cor-texto-escuro);
+}
+
+.home-cta .primary-btn {
+    background: var(--cor-acento);
+}
+
+.home-cta .primary-btn:hover {
+    filter: brightness(1.1);
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media (max-width: 768px) {
+    .main-content {
+        padding: 30px 24px;
+    }
+
+    .home-hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .home-cta {
+        padding: 40px 24px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <div class="logo-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="logo-text">AcademiaTech</div>
+        </div>
+
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="index.html" class="nav-link active">
+                    <i class="bi bi-house-door-fill"></i>
+                    <span>Início</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="cursos.html" class="nav-link">
+                    <i class="bi bi-mortarboard-fill"></i>
+                    <span>Cursos</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="https://wa.me/5545988127886" target="_blank" class="nav-link">
+                    <i class="bi bi-person-fill"></i>
+                    <span>Suporte</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="bi bi-unlock2-fill"></i>
+                    <span>Desbloquear Cursos</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="bi bi-discord"></i>
+                    <span>Discord</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-donate"></i>
+                    <span>Apoiar</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-comment-dots"></i>
+                    <span>Pedir Curso</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main-content">
+
+        <!-- HERO -->
+        <section class="home-hero">
+            <h1>Aprenda tecnologia de forma prática</h1>
+            <p>
+                A AcademiaTech reúne cursos organizados, atualizados e focados
+                em quem quer aprender de verdade — sem enrolação.
+            </p>
+
+            <div class="hero-actions">
+                <a href="cursos.html" class="primary-btn">
+                    Explorar Cursos
+                </a>
+                <a href="#" class="secondary-btn">
+                    Entrar no Discord
+                </a>
+            </div>
+        </section>
+
+        <!-- DESTAQUES -->
+        <section class="home-features">
+
+            <div class="feature-card">
+                <i class="fas fa-layer-group"></i>
+                <h3>Cursos Organizados</h3>
+                <p>
+                    Conteúdo separado por área, nível e objetivo.
+                    Nada jogado de qualquer jeito.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <i class="fas fa-sync-alt"></i>
+                <h3>Atualizações Frequentes</h3>
+                <p>
+                    Novos cursos e revisões constantes para acompanhar o mercado.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <i class="fas fa-users"></i>
+                <h3>Comunidade Ativa</h3>
+                <p>
+                    Suporte, dúvidas e troca de conhecimento via Discord.
+                </p>
+            </div>
+
+        </section>
+
+        <!-- CTA FINAL -->
+        <section class="home-cta">
+            <h2>Pronto para começar?</h2>
+            <p>
+                Acesse o catálogo completo e encontre o curso certo para você.
+            </p>
+
+            <a href="cursos.html" class="primary-btn">
+                Ir para os Cursos
+            </a>
+        </section>
+
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AcademiaTech | Cursos de Tecnologia</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* CORREÇÃO DO OVERFLOW E CENTRALIZAÇÃO */
+        body {
+            overflow-x: hidden;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            /* Largura máxima centralizada */
+            margin: 0 auto;
+            /* Centraliza horizontalmente */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* REMOVER O GRID QUE ESTÁ CAUSANDO PROBLEMAS */
+        .grid {
+            display: none;
+        }
+
+        /* HEADER CENTRALIZADO E COMPACTO */
+        .page-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+
+        .header-title {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .header-title h1 {
+            font-size: 1.8rem;
+            /* Menor */
+            margin-bottom: 8px;
+            color: var(--cor-clara);
+            line-height: 1.2;
+        }
+
+        .header-title p {
+            color: var(--cor-texto-escuro);
+            font-size: 0.95rem;
+            /* Menor */
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* CONTROLES COMPACTOS E CENTRALIZADOS */
+        .header-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+            max-width: 500px;
+            /* Largura máxima menor */
+            margin: 0 auto;
+        }
+
+        .search-container {
+            width: 100%;
+            max-width: 300px;
+            /* Menor */
+        }
+
+        /* DROPDOWN CENTRALIZADO */
+        .category-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 10px;
+            z-index: 1000;
+        }
+
+        /* GRID DE CURSOS CENTRALIZADO E COMPACTO */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            /* Cards menores */
+            gap: 20px;
+            /* Espaçamento menor */
+            justify-items: center;
+            /* Centraliza os cards */
+            margin-top: 20px;
+            padding-left: 68px;
+        }
+
+        /* CARDS MENORES */
+        .course-card {
+            background: var(--cor-destaque);
+            border-radius: 12px;
+            /* Bordas mais suaves */
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            /* Sombra mais suave */
+            transition: all 0.2s ease;
+            border: 1px solid var(--cor-borda);
+            width: 100%;
+            max-width: 280px;
+            /* Largura fixa menor */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            /* Efeito menor */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            border-color: var(--cor-acento);
+        }
+
+        /* IMAGEM MENOR */
+        .course-image {
+            height: 150px;
+            /* Menor */
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .course-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .course-card:hover .course-image img {
+            transform: scale(1.05);
+        }
+
+        /* BADGES MENORES */
+        .course-badges {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            gap: 6px;
+            z-index: 2;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            /* Menor */
+            border-radius: 12px;
+            /* Mais arredondado */
+            font-size: 9px;
+            /* Menor */
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge.premium {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #000;
+        }
+
+        .badge.bestseller {
+            background: linear-gradient(45deg, #FF4757, #FF6B81);
+            color: white;
+        }
+
+        /* CONTEÚDO COMPACTO */
+        .course-content {
+            padding: 15px;
+            /* Padding menor */
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-title {
+            font-size: 1rem;
+            /* Menor */
+            font-weight: 600;
+            color: var(--cor-clara);
+            margin-bottom: 8px;
+            line-height: 1.3;
+            min-height: 2.8em;
+        }
+
+        .course-author {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+            color: var(--cor-texto-escuro);
+            font-size: 0.85rem;
+            /* Menor */
+        }
+
+        .course-author i {
+            color: var(--cor-acento);
+            font-size: 0.9rem;
+        }
+
+        .course-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.8rem;
+            /* Menor */
+            color: var(--cor-texto-escuro);
+            padding: 10px 0;
+            border-top: 1px solid var(--cor-borda);
+            border-bottom: 1px solid var(--cor-borda);
+        }
+
+        .course-lessons,
+        .course-duration {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .course-lessons i,
+        .course-duration i {
+            color: var(--cor-acento);
+            font-size: 0.9rem;
+        }
+
+        /* BOTÃO MENOR */
+        .course-btn {
+            display: block;
+            text-align: center;
+            padding: 10px;
+            /* Menor */
+            background: linear-gradient(45deg, var(--cor-acento), #4CAF50);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            margin-top: auto;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            /* Menor */
+            letter-spacing: 0.3px;
+        }
+
+        .course-btn:hover {
+            background: linear-gradient(45deg, #4CAF50, var(--cor-acento));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(95, 184, 120, 0.3);
+        }
+
+        /* MENSAGEM SEM CURSOS */
+        .no-courses {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px 20px;
+            /* Menor */
+            color: var(--cor-texto-escuro);
+        }
+
+        .no-courses i {
+            font-size: 40px;
+            /* Menor */
+            margin-bottom: 15px;
+            color: var(--cor-secundaria);
+            opacity: 0.5;
+        }
+
+        .no-courses h3 {
+            font-size: 1.4rem;
+            /* Menor */
+            margin-bottom: 10px;
+            color: var(--cor-clara);
+        }
+
+        .no-courses p {
+            font-size: 0.95rem;
+            /* Menor */
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        /* RESPONSIVIDADE PARA DISPOSITIVOS PEQUENOS */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 15px;
+            }
+
+            .header-title h1 {
+                font-size: 1.6rem;
+            }
+
+            .header-title p {
+                font-size: 0.9rem;
+            }
+
+            .courses-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 15px;
+            }
+
+            .course-card {
+                max-width: 250px;
+            }
+
+            .course-image {
+                height: 140px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-title h1 {
+                font-size: 1.4rem;
+            }
+
+            .courses-grid {
+                grid-template-columns: 1fr;
+                max-width: 280px;
+                margin: 0 auto;
+            }
+
+            .course-card {
+                max-width: 100%;
+            }
+
+            .search-container {
+                max-width: 280px;
+            }
+
+            #poda {
+                max-width: 100%;
+            }
+
+            .input {
+                width: 100%;
+                max-width: 260px;
+                font-size: 14px;
+                height: 45px;
+            }
+
+            #filter-icon {
+                height: 35px;
+                width: 33px;
+                top: 5px;
+                right: 5px;
+            }
+
+            #filter-icon i {
+                font-size: 16px;
+            }
+
+            #search-icon {
+                left: 12px;
+            }
+
+            #search-icon i {
+                font-size: 16px;
+            }
+        }
+
+        /* AJUSTES PARA TELAS GRANDES */
+        @media (min-width: 1400px) {
+            .main-content {
+                max-width: 1300px;
+            }
+
+            .courses-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 25px;
+            }
+
+            .course-card {
+                max-width: 300px;
+            }
+        }
+
+
+        @media (max-width: 480px) {
+            .header-title h1 {
+                font-size: 1.4rem;
+            }
+
+            /* AQUI ESTÁ A MUDANÇA PRINCIPAL */
+            .courses-grid {
+                grid-template-columns: repeat(2, 1fr);
+                /* Mostrar 2 colunas */
+                gap: 10px;
+                /* Espaço menor entre os cards */
+                padding-left: 10px;
+                /* Ajustar padding */
+                max-width: 100%;
+                /* Remover a limitação de largura máxima */
+            }
+
+            .course-card {
+                max-width: 100%;
+                /* Usar toda a largura disponível */
+                height: auto;
+                /* Altura automática */
+            }
+
+            .course-image {
+                height: 120px;
+                /* Reduzir altura da imagem */
+            }
+
+            .course-content {
+                padding: 10px;
+                /* Menor padding */
+            }
+
+            .course-title {
+                font-size: 0.85rem;
+                /* Texto menor */
+                min-height: 2.5em;
+                /* Altura mínima ajustada */
+            }
+
+            .course-author {
+                font-size: 0.75rem;
+                margin-bottom: 8px;
+            }
+
+            .course-details {
+                font-size: 0.7rem;
+                padding: 8px 0;
+            }
+
+            .course-btn {
+                padding: 8px;
+                font-size: 0.75rem;
+            }
+
+            /* Ajustes para os badges */
+            .course-badges {
+                top: 5px;
+                left: 5px;
+                gap: 3px;
+            }
+
+            .badge {
+                padding: 2px 5px;
+                font-size: 7px;
+            }
+
+            /* Ajustar o container de busca */
+            .search-container {
+                max-width: 100%;
+            }
+
+            #poda {
+                max-width: 100%;
+            }
+
+            .input {
+                width: 100%;
+                font-size: 14px;
+                height: 45px;
+                max-width: 100%;
+            }
+
+            /* Ajustar dropdown de categorias para celular */
+            .category-dropdown {
+                width: 90vw;
+                left: 5vw;
+                transform: translateX(0);
+            }
+
+            /* Ajustar grid para telas muito pequenas */
+            @media (max-width: 350px) {
+                .courses-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 8px;
+                }
+
+                .course-image {
+                    height: 100px;
+                }
+
+                .course-title {
+                    font-size: 0.8rem;
+                }
+            }
+        }
+
+        /* Para tablets (largura média) manter a configuração atual */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .courses-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 15px;
+            }
+
+            .course-card {
+                max-width: 250px;
+            }
+        }
+
+        /* Para telas maiores (desktop) manter 3+ colunas */
+        @media (min-width: 769px) {
+            .courses-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 20px;
+            }
+        }
+
+        .course-card {
+            /* Manter altura consistente para os cards */
+            min-height: 350px;
+            /* Altura mínima para padronizar */
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (max-width: 480px) {
+            .course-card {
+                min-height: 280px;
+                /* Menor altura em celular */
+            }
+        }
+
+        /* Responsividade para diferentes tamanhos */
+        @media (min-width: 1200px) {
+            .courses-grid {
+                grid-template-columns: repeat(4, 1fr);
+                /* 4 colunas em telas grandes */
+            }
+        }
+
+        @media (min-width: 992px) and (max-width: 1199px) {
+            .courses-grid {
+                grid-template-columns: repeat(3, 1fr);
+                /* 3 colunas em desktop médio */
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 991px) {
+            .courses-grid {
+                grid-template-columns: repeat(2, 1fr);
+                /* 2 colunas em tablets maiores */
+                justify-content: center;
+            }
+        }
+
+        @media (min-width: 481px) and (max-width: 768px) {
+            .courses-grid {
+                grid-template-columns: repeat(2, 1fr);
+                /* 2 colunas em tablets */
+                gap: 15px;
+                padding-left: 10px;
+            }
+
+            .course-card {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar Lateral -->
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <div class="logo-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="logo-text">AcademiaTech</div>
+        </div>
+
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="index.html" class="nav-link">
+                    <i class="bi bi-house-door-fill"></i>
+                    <span>Início</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="cursos.html" class="nav-link active">
+                    <i class="bi bi-mortarboard-fill"></i>
+                    <span>Cursos</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="https://wa.me/5545988127886?text=Olá%2C%20gostaria%20de%20mais%20informações." class="nav-link"
+                    target="_blank">
+                    <i class="bi bi-person-fill"></i>
+                    <span>Suporte</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="bi bi-unlock2-fill"></i>
+                    <span>Desbloquear Cursos</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="https://discord.gg/example" class="nav-link" target="_blank">
+                    <i class="bi bi-discord"></i>
+                    <span>Discord</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="apoio.html" class="nav-link">
+                    <i class="fas fa-donate"></i>
+                    <span>Apoiar o Criador</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-comment-dots"></i>
+                    <span>Pedir Curso</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+        <div class="page-header">
+            <div class="header-title">
+                <h1>Cursos recentemente adicionados</h1>
+                <p>Adicionamos cursos todos os finais de semana</p>
+            </div>
+
+            <div class="header-controls">
+                <!-- Sistema de busca com efeitos retro -->
+                <div class="search-container">
+                    <div id="poda">
+                        <div class="glow"></div>
+                        <div class="darkBorderBg"></div>
+                        <div class="darkBorderBg"></div>
+                        <div class="darkBorderBg"></div>
+
+                        <div class="white"></div>
+                        <div class="border"></div>
+
+                        <div id="main">
+                            <input class="input" name="text" type="text" placeholder="Buscar cursos..."
+                                id="searchInput" />
+                            <div id="pink-mask"></div>
+
+                            <!-- Botão de filtro -->
+                            <div class="filterBorder"></div>
+                            <div id="filter-icon">
+                                <i class="fas fa-filter"></i>
+                            </div>
+
+                            <!-- Ícone de busca -->
+                            <div id="search-icon">
+                                <i class="fas fa-search"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dropdown de categorias -->
+                <div class="category-dropdown" id="categoryDropdown">
+                    <div class="dropdown-header">
+                        <h4>Filtrar por Categoria</h4>
+                        <button class="close-dropdown" id="closeDropdown">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="dropdown-content">
+                        <div class="category-option">
+                            <input type="checkbox" id="cat-redes" value="Redes">
+                            <label for="cat-redes">Redes</label>
+                        </div>
+                        <div class="category-option">
+                            <input type="checkbox" id="cat-frontend" value="Front-end">
+                            <label for="cat-frontend">Front-end</label>
+                        </div>
+                        <div class="category-option">
+                            <input type="checkbox" id="cat-js" value="JavaScript">
+                            <label for="cat-js">JavaScript</label>
+                        </div>
+                        <div class="category-option">
+                            <input type="checkbox" id="cat-fullstack" value="Full Stack">
+                            <label for="cat-fullstack">Full Stack</label>
+                        </div>
+                        <div class="category-option">
+                            <input type="checkbox" id="cat-datascience" value="Data Science">
+                            <label for="cat-datascience">Data Science</label>
+                        </div>
+                    </div>
+                    <div class="dropdown-footer">
+                        <button class="clear-filters-btn" id="clearFilters">
+                            <i class="fas fa-times"></i>
+                            Limpar Filtros
+                        </button>
+                        <button class="apply-filters-btn" id="applyFilters">
+                            <i class="fas fa-check"></i>
+                            Aplicar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grid de cursos -->
+        <div class="courses-grid" id="coursesGrid">
+            <!-- Os cards serão gerados dinamicamente pelo JavaScript -->
+        </div>
+    </main>
+
+    <!-- JavaScript para os cursos -->
+    <script>
+        // Dados dos cursos
+        const courses = [
+            {
+                id: 1,
+                title: "Fundamentos de Redes de Computadores",
+                author: "Prof. Ricardo Mendes",
+                category: "Redes",
+                lessons: 24,
+                duration: 18,
+                image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                badges: ["Bestseller"],
+                link: "#"
+            },
+            {
+                id: 2,
+                title: "Desenvolvimento Web Moderno",
+                author: "Ana Silva",
+                category: "Front-end",
+                lessons: 36,
+                duration: 28,
+                image: "https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                badges: ["Premium"],
+                link: "#"
+            },
+            {
+                id: 3,
+                title: "JavaScript Avançado",
+                author: "Carlos Oliveira",
+                category: "JavaScript",
+                lessons: 42,
+                duration: 35,
+                image: "https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                badges: ["Premium", "Bestseller"],
+                link: "#"
+            },
+            {
+                id: 4,
+                title: "Node.js e MongoDB",
+                author: "Maria Santos",
+                category: "Full Stack",
+                lessons: 30,
+                duration: 25,
+                image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                badges: ["Bestseller"],
+                link: "#"
+            },
+            {
+                id: 5,
+                title: "React do Zero ao Avançado",
+                author: "João Pereira",
+                category: "Front-end",
+                lessons: 48,
+                duration: 40,
+                image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                badges: ["Premium"],
+                link: "#"
+            },
+            {
+                id: 6,
+                title: "Python para Data Science",
+                author: "Laura Costa",
+                category: "Data Science",
+                lessons: 32,
+                duration: 26,
+                image: "https://images.unsplash.com/photo-1526379879527-8559ecfcaec3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                badges: [],
+                link: "#"
+            },
+            {
+                id: 7,
+                title: "DevOps: Docker e Kubernetes",
+                author: "Roberto Almeida",
+                category: "DevOps",
+                lessons: 38,
+                duration: 32,
+                image: "https://images.unsplash.com/photo-1605379399642-870262d3d051?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                badges: ["Premium"],
+                link: "#"
+            },
+            {
+                id: 8,
+                title: "UI/UX Design",
+                author: "Beatriz Lima",
+                category: "Design",
+                lessons: 28,
+                duration: 22,
+                image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                badges: ["Bestseller"],
+                link: "#"
+            }
+        ];
+
+        // Elementos DOM
+        const coursesGrid = document.getElementById('coursesGrid');
+        const searchInput = document.getElementById('searchInput');
+        const filterIcon = document.getElementById('filter-icon');
+        const categoryDropdown = document.getElementById('categoryDropdown');
+        const closeDropdown = document.getElementById('closeDropdown');
+        const clearFiltersBtn = document.getElementById('clearFilters');
+        const applyFiltersBtn = document.getElementById('applyFilters');
+        const categoryCheckboxes = document.querySelectorAll('.category-option input');
+
+        // Filtros ativos
+        let activeFilters = {
+            search: '',
+            categories: []
+        };
+
+        // Renderizar cursos
+        function renderCourses(coursesToRender) {
+            if (!coursesGrid) return;
+
+            coursesGrid.innerHTML = '';
+
+            if (coursesToRender.length === 0) {
+                coursesGrid.innerHTML = `
+                    <div class="no-courses">
+                        <i class="fas fa-search"></i>
+                        <h3>Nenhum curso encontrado</h3>
+                        <p>Tente ajustar seus filtros de busca ou categoria</p>
+                    </div>
+                `;
+                return;
+            }
+
+            coursesToRender.forEach(course => {
+                const courseCard = document.createElement('div');
+                courseCard.className = 'course-card';
+
+                let badgesHTML = '';
+                if (course.badges && course.badges.length > 0) {
+                    course.badges.forEach(badge => {
+                        const badgeClass = badge === "Premium" ? "premium" : "bestseller";
+                        badgesHTML += `<span class="badge ${badgeClass}">${badge}</span>`;
+                    });
+                }
+
+                courseCard.innerHTML = `
+                    <div class="course-image">
+                        <img src="${course.image}" alt="${course.title}" loading="lazy">
+                        <div class="course-badges">
+                            ${badgesHTML}
+                        </div>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">${course.title}</h3>
+                        <div class="course-author">
+                            <i class="fas fa-user"></i>
+                            <span>${course.author}</span>
+                        </div>
+                        <div class="course-details">
+                            <div class="course-lessons">
+                                <i class="fas fa-play-circle"></i>
+                                <span>${course.lessons} aulas</span>
+                            </div>
+                            <div class="course-duration">
+                                <i class="fas fa-clock"></i>
+                                <span>${course.duration}h</span>
+                            </div>
+                        </div>
+                        <a href="${course.link}" class="course-btn" target="_blank">
+                            Acessar Curso
+                        </a>
+                    </div>
+                `;
+
+                coursesGrid.appendChild(courseCard);
+            });
+        }
+
+        // Filtrar cursos
+        function filterCourses() {
+            const searchTerm = activeFilters.search.toLowerCase().trim();
+            const selectedCategories = activeFilters.categories;
+
+            const filteredCourses = courses.filter(course => {
+                const matchesSearch = searchTerm === '' ||
+                    course.title.toLowerCase().includes(searchTerm) ||
+                    course.author.toLowerCase().includes(searchTerm) ||
+                    course.category.toLowerCase().includes(searchTerm);
+
+                const matchesCategory = selectedCategories.length === 0 ||
+                    selectedCategories.includes(course.category);
+
+                return matchesSearch && matchesCategory;
+            });
+
+            renderCourses(filteredCourses);
+        }
+
+        // Atualizar filtros de categoria
+        function updateCategoryFilters() {
+            activeFilters.categories = Array.from(categoryCheckboxes)
+                .filter(checkbox => checkbox.checked)
+                .map(checkbox => checkbox.value);
+
+            filterCourses();
+        }
+
+        // Limpar todos os filtros
+        function clearAllFilters() {
+            searchInput.value = '';
+            activeFilters.search = '';
+
+            categoryCheckboxes.forEach(checkbox => checkbox.checked = false);
+            activeFilters.categories = [];
+
+            categoryDropdown.classList.remove('show');
+            filterCourses();
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function () {
+            // Renderizar cursos inicialmente
+            renderCourses(courses);
+
+            // Busca em tempo real
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    activeFilters.search = e.target.value;
+                    filterCourses();
+                });
+            }
+
+            // Abrir/fechar dropdown de filtros
+            if (filterIcon) {
+                filterIcon.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    categoryDropdown.classList.toggle('show');
+                });
+            }
+
+            if (closeDropdown) {
+                closeDropdown.addEventListener('click', () => {
+                    categoryDropdown.classList.remove('show');
+                });
+            }
+
+            // Fechar dropdown ao clicar fora
+            document.addEventListener('click', (e) => {
+                if (filterIcon && !filterIcon.contains(e.target) &&
+                    categoryDropdown && !categoryDropdown.contains(e.target)) {
+                    categoryDropdown.classList.remove('show');
+                }
+            });
+
+            // Checkboxes de categoria
+            if (categoryCheckboxes.length > 0) {
+                categoryCheckboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', updateCategoryFilters);
+                });
+            }
+
+            // Botões de filtro
+            if (applyFiltersBtn) {
+                applyFiltersBtn.addEventListener('click', () => {
+                    categoryDropdown.classList.remove('show');
+                    updateCategoryFilters();
+                });
+            }
+
+            if (clearFiltersBtn) {
+                clearFiltersBtn.addEventListener('click', clearAllFilters);
+            }
+
+            // Tecla ESC fecha dropdown
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && categoryDropdown.classList.contains('show')) {
+                    categoryDropdown.classList.remove('show');
+                }
+            });
+
+            // Focar no input ao clicar na área da busca
+            const podaElement = document.getElementById('poda');
+            if (podaElement) {
+                podaElement.addEventListener('click', (e) => {
+                    if (e.target !== searchInput) {
+                        searchInput.focus();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
