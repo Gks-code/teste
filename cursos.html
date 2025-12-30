@@ -257,279 +257,42 @@
             margin: 0 auto;
         }
 
-        /* CONTROLES DE BUSCA */
-        .header-controls {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
+        /* NOVO SISTEMA DE FILTROS SIMPLES */
+        .search-bar {
+            display: grid;
+            grid-template-columns: 1fr 220px 220px;
+            gap: 15px;
             width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
-            position: relative;
+            max-width: 900px;
+            margin: 0 auto 30px;
+            padding: 0 15px;
         }
 
-        .search-container {
-            width: 100%;
-            max-width: 400px;
-        }
-
-        /* ESTILOS DO COMPONENTE DE BUSCA RETRO */
-        #poda {
-            position: relative;
-            width: 100%;
-            background: #111827;
-            border-radius: 16px;
-            padding: 2px;
-            box-shadow: 
-                0 0 0 1px #1f2937,
-                0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .glow {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(45deg, #5fb878, #3b82f6, #5fb878);
-            border-radius: 16px;
-            opacity: 0.3;
-            filter: blur(12px);
-            z-index: -1;
-        }
-
-        .darkBorderBg {
-            position: absolute;
-            inset: 0;
-            background: #0f172a;
-            border-radius: 14px;
-            z-index: 0;
-        }
-
-        .darkBorderBg:nth-child(3) {
-            inset: 3px;
-            border-radius: 13px;
-            background: #1e293b;
-        }
-
-        .darkBorderBg:nth-child(4) {
-            inset: 4px;
-            border-radius: 12px;
-            background: #0f172a;
-        }
-
-        .white {
-            position: absolute;
-            inset: 5px;
-            background: #1e293b;
-            border-radius: 11px;
-            z-index: 1;
-        }
-
-        .border {
-            position: absolute;
-            inset: 0;
-            border-radius: 16px;
-            padding: 2px;
-            background: linear-gradient(45deg, #5fb878, #3b82f6);
-            -webkit-mask: 
-                linear-gradient(#fff 0 0) content-box, 
-                linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-            z-index: 2;
-        }
-
-        #main {
-            position: relative;
-            z-index: 3;
-            padding: 8px 50px 8px 45px;
-        }
-
-        .input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            color: var(--cor-clara);
-            font-size: 16px;
-            padding: 10px 0;
-            outline: none;
-            font-family: inherit;
-        }
-
-        .input::placeholder {
-            color: #64748b;
-        }
-
-        #pink-mask {
-            position: absolute;
-            bottom: 0;
-            left: 45px;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(45deg, #5fb878, #3b82f6);
-            transition: width 0.3s ease;
-        }
-
-        .input:focus ~ #pink-mask {
-            width: calc(100% - 90px);
-        }
-
-        #filter-icon {
-            position: absolute;
-            top: 50%;
-            right: 10px;
-            transform: translateY(-50%);
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(45deg, #1e293b, #334155);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 1px solid #475569;
-            transition: all 0.3s ease;
-        }
-
-        #filter-icon:hover {
-            background: linear-gradient(45deg, #5fb878, #3b82f6);
-            border-color: #5fb878;
-        }
-
-        #filter-icon i {
-            color: var(--cor-clara);
-            font-size: 16px;
-        }
-
-        #search-icon {
-            position: absolute;
-            top: 50%;
-            left: 15px;
-            transform: translateY(-50%);
-            color: #64748b;
-            font-size: 18px;
-        }
-
-        /* DROPDOWN DE CATEGORIAS */
-        .category-dropdown {
-            position: absolute;
-            top: calc(100% + 10px);
-            left: 50%;
-            transform: translateX(-50%);
-            width: 320px;
-            background: var(--cor-destaque);
-            border-radius: 12px;
+        .search-bar input,
+        .search-bar select {
+            padding: 14px 16px;
+            border-radius: 10px;
             border: 1px solid var(--cor-borda);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            display: none;
-            overflow: hidden;
-        }
-
-        .category-dropdown.show {
-            display: block;
-        }
-
-        .dropdown-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--cor-borda);
-            background: rgba(30, 41, 59, 0.9);
-        }
-
-        .dropdown-header h4 {
+            background: var(--cor-destaque);
             color: var(--cor-clara);
-            font-size: 1rem;
-        }
-
-        .close-dropdown {
-            background: none;
-            border: none;
-            color: var(--cor-texto-escuro);
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: color 0.3s ease;
-        }
-
-        .close-dropdown:hover {
-            color: var(--cor-acento);
-        }
-
-        .dropdown-content {
-            padding: 15px 20px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .category-option {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 0;
-            cursor: pointer;
-        }
-
-        .category-option input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--cor-acento);
-            cursor: pointer;
-        }
-
-        .category-option label {
-            color: var(--cor-texto-escuro);
-            cursor: pointer;
-            transition: color 0.3s ease;
-            flex: 1;
-        }
-
-        .category-option:hover label {
-            color: var(--cor-clara);
-        }
-
-        .dropdown-footer {
-            display: flex;
-            gap: 10px;
-            padding: 15px 20px;
-            border-top: 1px solid var(--cor-borda);
-            background: rgba(30, 41, 59, 0.9);
-        }
-
-        .clear-filters-btn,
-        .apply-filters-btn {
-            flex: 1;
-            padding: 10px;
-            border-radius: 8px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            font-size: 15px;
             transition: all 0.3s ease;
         }
 
-        .clear-filters-btn {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.3);
+        .search-bar input::placeholder {
+            color: #94a3b8;
         }
 
-        .clear-filters-btn:hover {
-            background: rgba(239, 68, 68, 0.2);
+        .search-bar input:focus,
+        .search-bar select:focus {
+            outline: none;
+            border-color: var(--cor-acento);
+            box-shadow: 0 0 0 3px rgba(95, 184, 120, 0.2);
         }
 
-        .apply-filters-btn {
-            background: linear-gradient(45deg, var(--cor-acento), #4CAF50);
-            color: white;
-        }
-
-        .apply-filters-btn:hover {
-            background: linear-gradient(45deg, #4CAF50, var(--cor-acento));
-            transform: translateY(-2px);
+        .search-bar input:hover,
+        .search-bar select:hover {
+            border-color: #475569;
         }
 
         /* GRID DE CURSOS */
@@ -770,6 +533,13 @@
                 font-size: 1rem;
             }
             
+            /* NOVO: Barra de busca mobile */
+            .search-bar {
+                grid-template-columns: 1fr;
+                max-width: 100%;
+                padding: 0 10px;
+            }
+            
             /* Grid de cursos mobile */
             .courses-grid {
                 grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -779,13 +549,6 @@
             
             .course-card {
                 max-width: 100%;
-            }
-            
-            /* Ajusta dropdown para mobile */
-            .category-dropdown {
-                width: 90vw;
-                left: 50%;
-                transform: translateX(-50%);
             }
         }
 
@@ -852,31 +615,6 @@
             .badge {
                 padding: 4px 8px;
                 font-size: 8px;
-            }
-            
-            /* Componente de busca mobile */
-            .search-container {
-                max-width: 100%;
-            }
-            
-            #main {
-                padding: 6px 45px 6px 40px;
-            }
-            
-            .input {
-                font-size: 14px;
-                padding: 8px 0;
-            }
-            
-            #filter-icon {
-                width: 32px;
-                height: 32px;
-                right: 8px;
-            }
-            
-            #search-icon {
-                left: 12px;
-                font-size: 16px;
             }
         }
 
@@ -1013,78 +751,31 @@
                 <p>Adicionamos cursos todos os finais de semana</p>
             </div>
 
-            <div class="header-controls">
-                <!-- Sistema de busca com efeitos retro -->
-                <div class="search-container">
-                    <div id="poda">
-                        <div class="glow"></div>
-                        <div class="darkBorderBg"></div>
-                        <div class="darkBorderBg"></div>
-                        <div class="darkBorderBg"></div>
+            <!-- NOVO SISTEMA DE FILTROS SIMPLIFICADO -->
+            <div class="search-bar">
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Buscar curso, autor ou categoria"
+                >
 
-                        <div class="white"></div>
-                        <div class="border"></div>
+                <select id="categoryFilter">
+                    <option value="">Todas as categorias</option>
+                    <option value="Redes">Redes</option>
+                    <option value="Front-end">Front-end</option>
+                    <option value="JavaScript">JavaScript</option>
+                    <option value="Full Stack">Full Stack</option>
+                    <option value="Data Science">Data Science</option>
+                    <option value="DevOps">DevOps</option>
+                    <option value="Design">Design</option>
+                </select>
 
-                        <div id="main">
-                            <input class="input" name="text" type="text" placeholder="Buscar cursos..."
-                                id="searchInput" />
-                            <div id="pink-mask"></div>
-
-                            <!-- Botão de filtro -->
-                            <div class="filterBorder"></div>
-                            <div id="filter-icon">
-                                <i class="fas fa-filter"></i>
-                            </div>
-
-                            <!-- Ícone de busca -->
-                            <div id="search-icon">
-                                <i class="fas fa-search"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Dropdown de categorias -->
-                <div class="category-dropdown" id="categoryDropdown">
-                    <div class="dropdown-header">
-                        <h4>Filtrar por Categoria</h4>
-                        <button class="close-dropdown" id="closeDropdown">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="dropdown-content">
-                        <div class="category-option">
-                            <input type="checkbox" id="cat-redes" value="Redes">
-                            <label for="cat-redes">Redes</label>
-                        </div>
-                        <div class="category-option">
-                            <input type="checkbox" id="cat-frontend" value="Front-end">
-                            <label for="cat-frontend">Front-end</label>
-                        </div>
-                        <div class="category-option">
-                            <input type="checkbox" id="cat-js" value="JavaScript">
-                            <label for="cat-js">JavaScript</label>
-                        </div>
-                        <div class="category-option">
-                            <input type="checkbox" id="cat-fullstack" value="Full Stack">
-                            <label for="cat-fullstack">Full Stack</label>
-                        </div>
-                        <div class="category-option">
-                            <input type="checkbox" id="cat-datascience" value="Data Science">
-                            <label for="cat-datascience">Data Science</label>
-                        </div>
-                    </div>
-                    <div class="dropdown-footer">
-                        <button class="clear-filters-btn" id="clearFilters">
-                            <i class="fas fa-times"></i>
-                            Limpar Filtros
-                        </button>
-                        <button class="apply-filters-btn" id="applyFilters">
-                            <i class="fas fa-check"></i>
-                            Aplicar
-                        </button>
-                    </div>
-                </div>
+                <select id="sortFilter">
+                    <option value="">Ordenar por</option>
+                    <option value="title">Nome (A–Z)</option>
+                    <option value="lessons">Mais aulas</option>
+                    <option value="duration">Maior duração</option>
+                </select>
             </div>
         </div>
 
@@ -1191,21 +882,11 @@
         // Elementos DOM
         const coursesGrid = document.getElementById('coursesGrid');
         const searchInput = document.getElementById('searchInput');
-        const filterIcon = document.getElementById('filter-icon');
-        const categoryDropdown = document.getElementById('categoryDropdown');
-        const closeDropdown = document.getElementById('closeDropdown');
-        const clearFiltersBtn = document.getElementById('clearFilters');
-        const applyFiltersBtn = document.getElementById('applyFilters');
-        const categoryCheckboxes = document.querySelectorAll('.category-option input');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const sortFilter = document.getElementById('sortFilter');
         const mobileMenuToggle = document.getElementById('mobileMenuToggle');
         const mobileOverlay = document.getElementById('mobileOverlay');
         const navbar = document.getElementById('navbar');
-
-        // Filtros ativos
-        let activeFilters = {
-            search: '',
-            categories: []
-        };
 
         // Renderizar cursos
         function renderCourses(coursesToRender) {
@@ -1269,45 +950,39 @@
             });
         }
 
-        // Filtrar cursos
-        function filterCourses() {
-            const searchTerm = activeFilters.search.toLowerCase().trim();
-            const selectedCategories = activeFilters.categories;
+        // NOVO SISTEMA DE FILTROS
+        function applyFilters() {
+            let result = [...courses];
 
-            const filteredCourses = courses.filter(course => {
-                const matchesSearch = searchTerm === '' ||
-                    course.title.toLowerCase().includes(searchTerm) ||
-                    course.author.toLowerCase().includes(searchTerm) ||
-                    course.category.toLowerCase().includes(searchTerm);
+            const search = searchInput.value.toLowerCase();
+            const category = categoryFilter.value;
+            const sort = sortFilter.value;
 
-                const matchesCategory = selectedCategories.length === 0 ||
-                    selectedCategories.includes(course.category);
+            if (search) {
+                result = result.filter(course =>
+                    course.title.toLowerCase().includes(search) ||
+                    course.author.toLowerCase().includes(search) ||
+                    course.category.toLowerCase().includes(search)
+                );
+            }
 
-                return matchesSearch && matchesCategory;
-            });
+            if (category) {
+                result = result.filter(course => course.category === category);
+            }
 
-            renderCourses(filteredCourses);
-        }
+            if (sort === 'title') {
+                result.sort((a, b) => a.title.localeCompare(b.title));
+            }
 
-        // Atualizar filtros de categoria
-        function updateCategoryFilters() {
-            activeFilters.categories = Array.from(categoryCheckboxes)
-                .filter(checkbox => checkbox.checked)
-                .map(checkbox => checkbox.value);
+            if (sort === 'lessons') {
+                result.sort((a, b) => b.lessons - a.lessons);
+            }
 
-            filterCourses();
-        }
+            if (sort === 'duration') {
+                result.sort((a, b) => b.duration - a.duration);
+            }
 
-        // Limpar todos os filtros
-        function clearAllFilters() {
-            searchInput.value = '';
-            activeFilters.search = '';
-
-            categoryCheckboxes.forEach(checkbox => checkbox.checked = false);
-            activeFilters.categories = [];
-
-            categoryDropdown.classList.remove('show');
-            filterCourses();
+            renderCourses(result);
         }
 
         // Menu mobile
@@ -1362,54 +1037,10 @@
             // Renderizar cursos inicialmente
             renderCourses(courses);
 
-            // Busca em tempo real
-            if (searchInput) {
-                searchInput.addEventListener('input', (e) => {
-                    activeFilters.search = e.target.value;
-                    filterCourses();
-                });
-            }
-
-            // Abrir/fechar dropdown de filtros
-            if (filterIcon) {
-                filterIcon.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    categoryDropdown.classList.toggle('show');
-                });
-            }
-
-            if (closeDropdown) {
-                closeDropdown.addEventListener('click', () => {
-                    categoryDropdown.classList.remove('show');
-                });
-            }
-
-            // Fechar dropdown ao clicar fora
-            document.addEventListener('click', (e) => {
-                if (filterIcon && !filterIcon.contains(e.target) &&
-                    categoryDropdown && !categoryDropdown.contains(e.target)) {
-                    categoryDropdown.classList.remove('show');
-                }
-            });
-
-            // Checkboxes de categoria
-            if (categoryCheckboxes.length > 0) {
-                categoryCheckboxes.forEach(checkbox => {
-                    checkbox.addEventListener('change', updateCategoryFilters);
-                });
-            }
-
-            // Botões de filtro
-            if (applyFiltersBtn) {
-                applyFiltersBtn.addEventListener('click', () => {
-                    categoryDropdown.classList.remove('show');
-                    updateCategoryFilters();
-                });
-            }
-
-            if (clearFiltersBtn) {
-                clearFiltersBtn.addEventListener('click', clearAllFilters);
-            }
+            // NOVO: Conectar os eventos dos filtros
+            searchInput.addEventListener('input', applyFilters);
+            categoryFilter.addEventListener('change', applyFilters);
+            sortFilter.addEventListener('change', applyFilters);
 
             // Menu mobile
             if (mobileMenuToggle) {
@@ -1428,45 +1059,6 @@
                     }
                 });
             });
-
-            // Tecla ESC fecha dropdown
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    if (categoryDropdown.classList.contains('show')) {
-                        categoryDropdown.classList.remove('show');
-                    }
-                    if (navbar.classList.contains('mobile-active')) {
-                        toggleMobileMenu();
-                    }
-                }
-            });
-
-            // Focar no input ao clicar na área da busca
-            const podaElement = document.getElementById('poda');
-            if (podaElement) {
-                podaElement.addEventListener('click', (e) => {
-                    if (e.target !== searchInput) {
-                        searchInput.focus();
-                    }
-                });
-            }
-            
-            // Atualizar efeito de foco no input
-            if (searchInput) {
-                searchInput.addEventListener('focus', () => {
-                    const pinkMask = document.getElementById('pink-mask');
-                    if (pinkMask) {
-                        pinkMask.style.width = `calc(100% - 90px)`;
-                    }
-                });
-                
-                searchInput.addEventListener('blur', () => {
-                    const pinkMask = document.getElementById('pink-mask');
-                    if (pinkMask && !searchInput.value) {
-                        pinkMask.style.width = '0';
-                    }
-                });
-            }
 
             // Configura navbar desktop
             handleNavbarBehavior();
