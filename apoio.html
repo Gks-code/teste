@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apoiar o Criador | AcademiaTech</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* RESET E CONFIGURAÇÕES GERAIS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cor-fundo: #0f172a;
+            --cor-destaque: #1e293b;
+            --cor-acento: #5fb878;
+            --cor-clara: #f1f5f9;
+            --cor-texto-escuro: #94a3b8;
+            --cor-borda: #334155;
+            --cor-secundaria: #3b82f6;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--cor-fundo);
+            color: var(--cor-clara);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* NAVBAR LATERAL - FECHADA POR PADRÃO */
+        .navbar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 70px; /* Fechada por padrão */
+            background: var(--cor-destaque);
+            border-right: 1px solid var(--cor-borda);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        /* Quando hover ou ativa */
+        .navbar:hover,
+        .navbar.expanded {
+            width: 250px;
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 15px 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--cor-borda);
+            white-space: nowrap;
+            min-height: 60px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, var(--cor-acento), var(--cor-secundaria));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--cor-acento), var(--cor-secundaria));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.3s ease 0.1s;
+            white-space: nowrap;
+        }
+
+        .navbar:hover .logo-text,
+        .navbar.expanded .logo-text {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .navbar-nav {
+            list-style: none;
+            flex: 1;
+            padding: 0 10px;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: var(--cor-texto-escuro);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .nav-link span {
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .navbar:hover .nav-link span,
+        .navbar.expanded .nav-link span {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .nav-link:hover {
+            background: rgba(95, 184, 120, 0.1);
+            color: var(--cor-clara);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(45deg, rgba(95, 184, 120, 0.2), rgba(59, 130, 246, 0.2));
+            color: var(--cor-acento);
+            border-left: 3px solid var(--cor-acento);
+        }
+
+        .nav-link i {
+            font-size: 1.3rem;
+            width: 24px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        /* Tooltip para quando navbar está fechada */
+        .nav-link::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: calc(100% + 15px);
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--cor-destaque);
+            color: var(--cor-clara);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            border: 1px solid var(--cor-borda);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+        }
+
+        .nav-link:hover::after {
+            opacity: 1;
+            visibility: visible;
+            left: calc(100% + 10px);
+        }
+
+        /* BOTÃO MENU MOBILE */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1002;
+            background: var(--cor-acento);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: none;
+        }
+
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            backdrop-filter: blur(3px);
+        }
+
+        /* CONTEÚDO PRINCIPAL */
+        .main-content {
+            margin-left: 70px; /* Ajustado para navbar fechada */
+            padding: 30px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* Quando navbar expandida */
+        .navbar:hover ~ .main-content,
+        body:has(.navbar.expanded) .main-content {
+            margin-left: 250px;
+        }
+
+        /* Estilos específicos para a página de apoio */
+        .support-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .support-header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .support-header h1 {
+            font-size: 2.5rem;
+            color: var(--cor-clara);
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, var(--cor-acento), #32BBAD);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .support-header p {
+            color: var(--cor-texto-escuro);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .support-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .support-card {
+            background: linear-gradient(135deg, var(--cor-destaque), rgba(30, 41, 59, 0.9));
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.4s ease;
+            border: 1px solid var(--cor-borda);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeInUp 0.8s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .support-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(50, 187, 173, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .support-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .support-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: var(--cor-acento);
+        }
+
+        .card-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #32BBAD, #1A887E);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 2.5rem;
+            color: white;
+            box-shadow: 0 8px 25px rgba(50, 187, 173, 0.3);
+        }
+
+        .support-card h3 {
+            color: var(--cor-clara);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .support-card p {
+            color: var(--cor-texto-escuro);
+            line-height: 1.7;
+            margin-bottom: 30px;
+            font-size: 1.05rem;
+            max-width: 600px;
+        }
+
+        .qr-container {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            max-width: 280px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .qr-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #32BBAD, #5fb878);
+        }
+
+        .qr-container img {
+            width: 220px;
+            height: 220px;
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+        }
+
+        .qr-label {
+            margin-top: 15px;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .pix-key {
+            background: rgba(50, 187, 173, 0.15);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid rgba(50, 187, 173, 0.3);
+        }
+
+        .pix-key-code {
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 15px;
+            border-radius: 8px;
+            color: var(--cor-clara);
+            margin: 15px 0;
+            word-break: break-all;
+            font-size: 0.95rem;
+            border: 1px solid var(--cor-borda);
+        }
+
+        .copy-btn {
+            background: linear-gradient(45deg, #32BBAD, #5fb878);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px auto 0;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(50, 187, 173, 0.3);
+        }
+
+        .copy-btn:hover {
+            background: linear-gradient(45deg, #5fb878, #32BBAD);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(50, 187, 173, 0.4);
+        }
+
+        .copy-btn.copied {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+        }
+
+        .thank-you {
+            margin-top: 25px;
+            padding: 15px;
+            background: rgba(95, 184, 120, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid var(--cor-acento);
+            animation: fadeIn 1s ease;
+        }
+
+        .thank-you p {
+            color: var(--cor-clara);
+            font-size: 0.95rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* =========================
+           RESPONSIVIDADE
+        ========================= */
+
+        @media (max-width: 768px) {
+            /* Esconde navbar em mobile */
+            .navbar {
+                display: none;
+                width: 280px;
+                transform: translateX(-100%);
+            }
+            
+            /* Mostra botão menu mobile */
+            .mobile-menu-toggle {
+                display: flex;
+            }
+            
+            /* Navbar quando ativo em mobile */
+            .navbar.mobile-active {
+                display: flex;
+                transform: translateX(0);
+                animation: slideIn 0.3s ease;
+            }
+            
+            .navbar.mobile-active .logo-text,
+            .navbar.mobile-active .nav-link span {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            
+            /* Remove tooltips em mobile */
+            .nav-link::after {
+                display: none;
+            }
+            
+            /* Overlay quando menu está aberto */
+            .mobile-overlay.active {
+                display: block;
+            }
+            
+            /* Ajusta conteúdo principal para mobile */
+            .main-content {
+                margin-left: 0;
+                padding: 20px 15px;
+                max-width: 100%;
+                padding-top: 70px; /* Espaço para o botão menu */
+            }
+            
+            /* Header mobile */
+            .support-header h1 {
+                font-size: 2rem;
+            }
+            
+            .support-card {
+                padding: 25px;
+            }
+            
+            .card-icon {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+            
+            .qr-container {
+                padding: 20px;
+            }
+            
+            .qr-container img {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .pix-key {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 15px 10px;
+                padding-top: 60px;
+            }
+            
+            .support-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .support-header p {
+                font-size: 1rem;
+            }
+            
+            .support-card {
+                padding: 20px;
+            }
+            
+            .support-card h3 {
+                font-size: 1.5rem;
+            }
+            
+            .card-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 1.8rem;
+            }
+            
+            .qr-container img {
+                width: 180px;
+                height: 180px;
+            }
+            
+            .pix-key-code {
+                font-size: 0.85rem;
+                padding: 12px;
+            }
+            
+            .copy-btn {
+                padding: 10px 20px;
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (min-width: 769px) {
+            /* Tooltip só aparece quando navbar fechada */
+            .navbar:not(:hover):not(.expanded) .nav-link:hover::after {
+                opacity: 1;
+                visibility: visible;
+                left: calc(100% + 10px);
+            }
+            
+            /* Remove transição de texto quando fechada para performance */
+            .navbar:not(:hover):not(.expanded) .logo-text,
+            .navbar:not(:hover):not(.expanded) .nav-link span {
+                transition: none;
+            }
+        }
+
+        /* ANIMAÇÃO PARA O MENU MOBILE */
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Botão do menu mobile -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <!-- Navbar Lateral -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-logo">
+            <div class="logo-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="logo-text">AcademiaTech</div>
+        </div>
+        
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="index.html" class="nav-link" data-tooltip="Início">
+                    <i class="bi bi-house-door-fill"></i>
+                    <span>Início</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="cursos.html" class="nav-link" data-tooltip="Cursos">
+                   <i class="bi bi-mortarboard-fill"></i>
+                    <span>Cursos</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="https://wa.me/5545988127886?text=Olá%2C%20gostaria%20de%20mais%20informações." class="nav-link" target="_blank" data-tooltip="Suporte">
+                 <i class="bi bi-person-fill"></i>
+                    <span>Suporte</span>
+                </a>
+            </li>
+            
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-tooltip="Desbloquear Cursos">
+                   <i class="bi bi-unlock2-fill"></i>
+                    <span>Desbloquear Cursos</span>
+                </a>
+            </li>
+             
+            <li class="nav-item">
+                <a href="https://discord.gg/example" class="nav-link" target="_blank" data-tooltip="Discord">
+                    <i class="bi bi-discord"></i>
+                    <span>Discord</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="apoiar.html" class="nav-link active" data-tooltip="Apoiar o Criador">
+                    <i class="fas fa-donate"></i>
+                    <span>Apoiar o Criador</span>
+                </a>
+            </li>
+            
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-tooltip="Pedir Curso">
+                    <i class="fas fa-comment-dots"></i>
+                    <span>Pedir Curso</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+        <div class="support-container">
+            <div class="support-header">
+                <h1>Apoiar o Criador</h1>
+                <p>Seu apoio ajuda a manter a AcademiaTech ativa e a produzir mais conteúdo de qualidade</p>
+            </div>
+
+            <div class="support-grid">
+                <!-- Cartão PIX -->
+                <div class="support-card">
+                    <div class="card-icon">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <h3>Faça uma doação via PIX</h3>
+                    <p>Se esse conteúdo te ajudou de alguma forma e você quiser apoiar meu trabalho, qualquer valor é bem-vindo. Grande parte do que está aqui envolve tempo, pesquisa e organização de materiais, para facilitar o acesso e poupar o seu tempo. O apoio é totalmente opcional e você decide o valor.</p>
+                    
+                    <div class="qr-container">
+                        <!-- QR Code gerado com a chave PIX -->
+                        <img src="PHOTO-2025-12-29-16-07-57.jpg" 
+                             alt="QR Code PIX para doação" id="qrCodeImage">
+                        <div class="qr-label">Escaneie com seu app bancário</div>
+                    </div>
+
+                    <div class="pix-key">
+                        <p style="color: var(--cor-texto-escuro); margin-bottom: 10px;">Ou use a chave PIX:</p>
+                        <div class="pix-key-code" id="pixKey">
+                            8933ea95-2156-4602-b811-840273113aa5 <!-- SUBSTITUA POR SUA CHAVE PIX REAL -->
+                        </div>
+                        <button class="copy-btn" onclick="copyPixKey()" id="copyBtn">
+                            <i class="fas fa-copy"></i>
+                            Copiar Chave PIX
+                        </button>
+                    </div>
+                    
+                    <div class="thank-you">
+                        <p>
+                            <i class="fas fa-heart" style="color: #FF4757;"></i>
+                            Agradeço imensamente pelo seu apoio!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Elementos DOM
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        const navbar = document.getElementById('navbar');
+        let navbarExpanded = false;
+
+        // Menu mobile
+        function toggleMobileMenu() {
+            navbar.classList.toggle('mobile-active');
+            mobileOverlay.classList.toggle('active');
+            
+            // Toggle ícone do botão
+            const icon = mobileMenuToggle.querySelector('i');
+            if (navbar.classList.contains('mobile-active')) {
+                icon.className = 'fas fa-times';
+                navbar.classList.add('expanded');
+            } else {
+                icon.className = 'fas fa-bars';
+                navbar.classList.remove('expanded');
+            }
+        }
+
+        // Função para copiar a chave PIX
+        function copyPixKey() {
+            const pixKey = document.getElementById('pixKey').textContent;
+            const copyBtn = document.getElementById('copyBtn');
+            
+            navigator.clipboard.writeText(pixKey).then(() => {
+                // Feedback visual
+                copyBtn.innerHTML = '<i class="fas fa-check"></i> Chave Copiada!';
+                copyBtn.classList.add('copied');
+                
+                // Reverte após 2 segundos
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copiar Chave PIX';
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Erro ao copiar:', err);
+                alert('Erro ao copiar. Tente selecionar e copiar manualmente.');
+            });
+        }
+
+        // Controle da navbar no desktop
+        function handleNavbarBehavior() {
+            if (window.innerWidth > 768) {
+                // Em desktop, fecha navbar após 3 segundos sem hover
+                let hoverTimeout;
+                
+                navbar.addEventListener('mouseenter', () => {
+                    clearTimeout(hoverTimeout);
+                    navbar.classList.add('expanded');
+                    navbarExpanded = true;
+                });
+                
+                navbar.addEventListener('mouseleave', () => {
+                    hoverTimeout = setTimeout(() => {
+                        navbar.classList.remove('expanded');
+                        navbarExpanded = false;
+                    }, 500); // Fecha após 0.5 segundos sem hover
+                });
+                
+                // Expande ao clicar para navegar
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (!navbarExpanded) {
+                            navbar.classList.add('expanded');
+                            navbarExpanded = true;
+                            setTimeout(() => {
+                                navbar.classList.remove('expanded');
+                                navbarExpanded = false;
+                            }, 2000);
+                        }
+                    });
+                });
+            }
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            // Menu mobile
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+            }
+
+            if (mobileOverlay) {
+                mobileOverlay.addEventListener('click', toggleMobileMenu);
+            }
+
+            // Fechar menu ao clicar em um link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) {
+                        toggleMobileMenu();
+                    }
+                });
+            });
+
+            // Tecla ESC fecha menu
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    if (navbar.classList.contains('mobile-active')) {
+                        toggleMobileMenu();
+                    }
+                }
+            });
+
+            // Configura navbar desktop
+            handleNavbarBehavior();
+
+            // Redimensionamento da janela
+            window.addEventListener('resize', handleNavbarBehavior);
+        });
+    </script>
+</body>
+</html>

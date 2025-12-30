@@ -36,30 +36,41 @@
             color: var(--cor-clara);
             min-height: 100vh;
             overflow-x: hidden;
+            transition: margin-left 0.3s ease;
         }
 
-        /* NAVBAR LATERAL - DESKTOP */
+        /* NAVBAR LATERAL - FECHADA POR PADRÃO */
         .navbar {
             position: fixed;
             left: 0;
             top: 0;
             height: 100vh;
-            width: 250px;
+            width: 70px; /* Fechada por padrão */
             background: var(--cor-destaque);
             border-right: 1px solid var(--cor-borda);
-            z-index: 100;
+            z-index: 1000;
             display: flex;
             flex-direction: column;
             padding: 20px 0;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        /* Quando hover ou ativa */
+        .navbar:hover,
+        .navbar.expanded {
+            width: 250px;
         }
 
         .navbar-logo {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 0 20px 20px;
+            padding: 0 15px 20px;
             margin-bottom: 20px;
             border-bottom: 1px solid var(--cor-borda);
+            white-space: nowrap;
+            min-height: 60px;
         }
 
         .logo-icon {
@@ -71,6 +82,7 @@
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
+            flex-shrink: 0;
         }
 
         .logo-text {
@@ -79,12 +91,22 @@
             background: linear-gradient(45deg, var(--cor-acento), var(--cor-secundaria));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.3s ease 0.1s;
+            white-space: nowrap;
+        }
+
+        .navbar:hover .logo-text,
+        .navbar.expanded .logo-text {
+            opacity: 1;
+            transform: translateX(0);
         }
 
         .navbar-nav {
             list-style: none;
             flex: 1;
-            padding: 0 15px;
+            padding: 0 10px;
         }
 
         .nav-item {
@@ -100,6 +122,21 @@
             text-decoration: none;
             border-radius: 8px;
             transition: all 0.3s ease;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .nav-link span {
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .navbar:hover .nav-link span,
+        .navbar.expanded .nav-link span {
+            opacity: 1;
+            transform: translateX(0);
         }
 
         .nav-link:hover {
@@ -114,9 +151,38 @@
         }
 
         .nav-link i {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             width: 24px;
             text-align: center;
+            flex-shrink: 0;
+        }
+
+        /* Tooltip para quando navbar está fechada */
+        .nav-link::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: calc(100% + 15px);
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--cor-destaque);
+            color: var(--cor-clara);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            border: 1px solid var(--cor-borda);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+        }
+
+        .nav-link:hover::after {
+            opacity: 1;
+            visibility: visible;
+            left: calc(100% + 10px);
         }
 
         /* BOTÃO MENU MOBILE */
@@ -125,7 +191,7 @@
             position: fixed;
             top: 15px;
             left: 15px;
-            z-index: 1001;
+            z-index: 1002;
             background: var(--cor-acento);
             color: white;
             width: 45px;
@@ -148,17 +214,23 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.7);
-            z-index: 99;
+            z-index: 999;
             backdrop-filter: blur(3px);
         }
 
         /* CONTEÚDO PRINCIPAL */
         .main-content {
-            margin-left: 250px;
+            margin-left: 70px; /* Ajustado para navbar fechada */
             padding: 40px 60px;
             min-height: 100vh;
-            max-width: calc(100% - 250px);
+            transition: margin-left 0.3s ease;
             background: var(--cor-fundo);
+        }
+
+        /* Quando navbar expandida */
+        .navbar:hover ~ .main-content,
+        body:has(.navbar.expanded) .main-content {
+            margin-left: 250px;
         }
 
         /* =========================
@@ -390,6 +462,8 @@
             /* Esconde navbar em mobile */
             .navbar {
                 display: none;
+                width: 280px;
+                transform: translateX(-100%);
             }
             
             /* Mostra botão menu mobile */
@@ -400,13 +474,19 @@
             /* Navbar quando ativo em mobile */
             .navbar.mobile-active {
                 display: flex;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 280px;
-                height: 100vh;
-                z-index: 1000;
+                transform: translateX(0);
                 animation: slideIn 0.3s ease;
+            }
+            
+            .navbar.mobile-active .logo-text,
+            .navbar.mobile-active .nav-link span {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            
+            /* Remove tooltips em mobile */
+            .nav-link::after {
+                display: none;
             }
             
             /* Overlay quando menu está aberto */
@@ -494,6 +574,21 @@
             }
         }
 
+        @media (min-width: 769px) {
+            /* Tooltip só aparece quando navbar fechada */
+            .navbar:not(:hover):not(.expanded) .nav-link:hover::after {
+                opacity: 1;
+                visibility: visible;
+                left: calc(100% + 10px);
+            }
+            
+            /* Remove transição de texto quando fechada para performance */
+            .navbar:not(:hover):not(.expanded) .logo-text,
+            .navbar:not(:hover):not(.expanded) .nav-link span {
+                transition: none;
+            }
+        }
+
         /* ANIMAÇÃO PARA O MENU MOBILE */
         @keyframes slideIn {
             from {
@@ -513,7 +608,7 @@
     <div class="mobile-overlay" id="mobileOverlay"></div>
 
     <!-- NAVBAR -->
-    <nav class="navbar">
+    <nav class="navbar" id="navbar">
         <div class="navbar-logo">
             <div class="logo-icon">
                 <i class="fas fa-graduation-cap"></i>
@@ -523,49 +618,49 @@
 
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a href="index.html" class="nav-link active">
+                <a href="index.html" class="nav-link active" data-tooltip="Início">
                     <i class="bi bi-house-door-fill"></i>
                     <span>Início</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a href="cursos.html" class="nav-link">
+                <a href="cursos.html" class="nav-link" data-tooltip="Cursos">
                     <i class="bi bi-mortarboard-fill"></i>
                     <span>Cursos</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a href="https://wa.me/5545988127886" target="_blank" class="nav-link">
+                <a href="https://wa.me/5545988127886" target="_blank" class="nav-link" data-tooltip="Suporte">
                     <i class="bi bi-person-fill"></i>
                     <span>Suporte</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link" data-tooltip="Desbloquear Cursos">
                     <i class="bi bi-unlock2-fill"></i>
                     <span>Desbloquear Cursos</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link" data-tooltip="Discord">
                     <i class="bi bi-discord"></i>
                     <span>Discord</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a href="apoio.html" class="nav-link">
+                <a href="apoio.html" class="nav-link" data-tooltip="Apoiar o Criador">
                     <i class="fas fa-donate"></i>
                     <span>Apoiar o Criador</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link" data-tooltip="Pedir Curso">
                     <i class="fas fa-comment-dots"></i>
                     <span>Pedir Curso</span>
                 </a>
@@ -648,7 +743,7 @@
         // Elementos DOM
         const mobileMenuToggle = document.getElementById('mobileMenuToggle');
         const mobileOverlay = document.getElementById('mobileOverlay');
-        const navbar = document.querySelector('.navbar');
+        const navbar = document.getElementById('navbar');
 
         // Menu mobile
         function toggleMobileMenu() {
@@ -659,8 +754,41 @@
             const icon = mobileMenuToggle.querySelector('i');
             if (navbar.classList.contains('mobile-active')) {
                 icon.className = 'fas fa-times';
+                navbar.classList.add('expanded');
             } else {
                 icon.className = 'fas fa-bars';
+                navbar.classList.remove('expanded');
+            }
+        }
+
+        // Controle da navbar no desktop
+        function handleNavbarBehavior() {
+            if (window.innerWidth > 768) {
+                // Em desktop, fecha navbar após 3 segundos sem hover
+                let hoverTimeout;
+                
+                navbar.addEventListener('mouseenter', () => {
+                    clearTimeout(hoverTimeout);
+                    navbar.classList.add('expanded');
+                });
+                
+                navbar.addEventListener('mouseleave', () => {
+                    hoverTimeout = setTimeout(() => {
+                        navbar.classList.remove('expanded');
+                    }, 500); // Fecha após 0.5 segundos sem hover
+                });
+                
+                // Expande ao clicar para navegar
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (!navbar.classList.contains('expanded')) {
+                            navbar.classList.add('expanded');
+                            setTimeout(() => {
+                                navbar.classList.remove('expanded');
+                            }, 2000);
+                        }
+                    });
+                });
             }
         }
 
@@ -710,6 +838,12 @@
                 el.style.opacity = '0';
                 observer.observe(el);
             });
+
+            // Configura navbar desktop
+            handleNavbarBehavior();
+
+            // Redimensionamento da janela
+            window.addEventListener('resize', handleNavbarBehavior);
         });
     </script>
 </body>
